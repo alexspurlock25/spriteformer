@@ -27,6 +27,7 @@ class GameScene extends Phaser.Scene {
   preload() {
     this.load.image(ASSET_KEYS.BACKGROUND, "/assets/background.png")
     this.load.image(ASSET_KEYS.PLAYER.JUMP, "/assets/player/jump.png")
+    this.load.spritesheet(ASSET_KEYS.PLAYER.IDLE, "/assets/player/idle.png", { frameWidth: 32, frameHeight: 32 })
     this.load.spritesheet(ASSET_KEYS.PLATFORMS, "/assets/terrain.png", { frameWidth: 48, frameHeight: 48 })
   }
 
@@ -38,8 +39,16 @@ class GameScene extends Phaser.Scene {
       for (let i = 24; i < config.width; i = i + 90) {
         this.add.image(i, config.height - 50, ASSET_KEYS.PLATFORMS, 2)        
       }
+
+      this.anims.create({
+        key: "idle",
+        frameRate: 24,
+        frames: this.anims.generateFrameNumbers(ASSET_KEYS.PLAYER.IDLE, { start: 0, end: 10 }),
+        repeat: -1
+      });
     
-    this.add.image(24, config.height - 90, ASSET_KEYS.PLAYER.JUMP)
+    this.player = this.add.sprite(24, config.height - 90, ASSET_KEYS.PLAYER.IDLE)
+    this.player.anims.play("idle")
   }
     
     // runs on every frame
