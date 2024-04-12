@@ -6,7 +6,9 @@ const size = {
   height: 700,
 };
 
-const gravity = 100
+const gravity = 400
+const playerSpeed = 200
+let isOnGround = true
 
 const ASSET_KEYS = {
   BACKGROUND: "background",
@@ -28,13 +30,12 @@ class GameScene extends Phaser.Scene {
   // prelaod assets here
   preload() {
     this.load.image(ASSET_KEYS.BACKGROUND, "/assets/background.png")
-    this.load.image(ASSET_KEYS.PLAYER.JUMP, "/assets/player/jump.png")
     
     // player
-    this.load.image(ASSET_KEYS.PLAYER.FALL, "/assets/player/fall.png")
+    this.load.spritesheet(ASSET_KEYS.PLAYER.FALL, "/assets/player/fall.png", { frameWidth: 32, frameHeight: 32 })
     this.load.spritesheet(ASSET_KEYS.PLAYER.HIT, "/assets/player/hit.png", { frameWidth: 32, frameHeight: 32 })
     this.load.spritesheet(ASSET_KEYS.PLAYER.IDLE, "/assets/player/idle.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.image(ASSET_KEYS.PLAYER.JUMP, "/assets/player/jump.png")
+    this.load.spritesheet(ASSET_KEYS.PLAYER.JUMP, "/assets/player/jump.png", { frameWidth: 32, frameHeight: 32 })
     this.load.spritesheet(ASSET_KEYS.PLAYER.RUN, "/assets/player/run.png", { frameWidth: 32, frameHeight: 32 })
 
     this.load.spritesheet(ASSET_KEYS.PLATFORMS, "/assets/terrain.png", { frameWidth: 48, frameHeight: 48 })
@@ -42,33 +43,78 @@ class GameScene extends Phaser.Scene {
 
   // handle the preloaded assets here
   create() {
+    this.platformGroup = this.add.group()
+    this.fruitGroup = this.add.group()
+
     this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.BACKGROUND)
       .setOrigin(0, 0)
 
     this.createLevel()
     this.createPlayer()
+
+    this.physics.add.collider(this.player, this.platformGroup, () => { isOnGround = true })
+
   }
     
-    // runs on every frame
-    update() { }
-
-    createPlayer() {
-      this.anims.create({
-        key: "idle",
-        frameRate: 24,
-        frames: this.anims.generateFrameNumbers(ASSET_KEYS.PLAYER.IDLE, { start: 0, end: 10 }),
-        repeat: -1
-      });
-    
-      this.player = this.add.sprite(24, config.height - 90, ASSET_KEYS.PLAYER.IDLE)
-      this.player.anims.play("idle")
+  // runs on every frame
+  update() {
+    if (this.cursor.left.isDown) {
+      this.player.setVelocityX(-playerSpeed).anims.play("run", true);
+      this.player.scaleX = -1
+      this.player.setOffset(30, 0);
+    } else if (this.cursor.right.isDown) {
+      this.player.setVelocityX(playerSpeed).anims.play("run", true);
+      this.player.scaleX = 1
+      this.player.setOffset(0, 0);
+    } else {
+      this.player.setVelocityX(0).anims.play("idle", true);
     }
 
-    createLevel() {
-      for (let i = 24; i < config.width; i = i + 90) {
-        this.add.image(i, config.height - 50, ASSET_KEYS.PLATFORMS, 2)        
-      }
+    if (this.cursor.space.isDown && isOnGround == true) {
+      this.player.setVelocityY(-playerSpeed).anims.play("jump", true);
+      isOnGround = false
+    } 
+  }
+
+  createPlayer() {
+    this.cursor = this.input.keyboard.createCursorKeys()
+
+    this.anims.create({
+      key: "idle",
+      frameRate: 24,
+      frames: this.anims.generateFrameNumbers(ASSET_KEYS.PLAYER.IDLE, { start: 0, end: 10 }),
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: "run",
+      frameRate: 24,
+      frames: this.anims.generateFrameNumbers(ASSET_KEYS.PLAYER.RUN, { start: 0, end: 11 }),
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: "jump",
+      frameRate: 24,
+      frames: this.anims.generateFrameNumbers(ASSET_KEYS.PLAYER.JUMP, { start: 0, end: 0 }),
+      repeat: -1
+    });
+  
+    this.player = this.physics.add.sprite(24, config.height - 120, ASSET_KEYS.PLAYER.IDLE)
+    // this.player.setCollideWorldBounds(true)
+    this.player.addCollidesWith(1)
+    this.player.anims.play("idle")
+  }
+
+  createLevel() {
+    for (let i = 24; i < config.width; i = i + 150) {
+      let platform = this.physics.add.sprite(i, config.height - 60, ASSET_KEYS.PLATFORMS, 2).setImmovable(true)
+      platform.body.setCollisionCategory(1)
+      platform.body.setAllowGravity(false);
+
+      this.platformGroup.add(platform, true)
     }
+  }
 }
 
 const config = {
