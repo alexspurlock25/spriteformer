@@ -31,13 +31,9 @@ class GameScene extends Phaser.Scene {
   // handle the preloaded assets here
   create() {
     this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.BACKGROUND)
+      .setOrigin(0, 0)
+      
     this.add.image(0, 0, ASSET_KEYS.PLAYER.JUMP)
-    // this.add.image(0, 0, ASSET_KEYS.BACKGROUND)
-    // this.add.text(
-    //   size.width / 2 - 70, 
-    //   size.height / 2, 
-    //   "Hello, World!"
-    // );
   }
     
     // runs on every frame
