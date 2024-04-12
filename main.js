@@ -10,6 +10,7 @@ const gravity = 100
 
 const ASSET_KEYS = {
   BACKGROUND: "background",
+  PLATFORMS: "platforms",
   PLAYER: {
     IDLE: "player_idle",
     RUN: "player_run",
@@ -26,14 +27,19 @@ class GameScene extends Phaser.Scene {
   preload() {
     this.load.image(ASSET_KEYS.BACKGROUND, "/assets/background.png")
     this.load.image(ASSET_KEYS.PLAYER.JUMP, "/assets/player/jump.png")
+    this.load.spritesheet(ASSET_KEYS.PLATFORMS, "/assets/terrain.png", { frameWidth: 48, frameHeight: 48 })
   }
 
   // handle the preloaded assets here
   create() {
     this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.BACKGROUND)
       .setOrigin(0, 0)
-      
-    this.add.image(0, 0, ASSET_KEYS.PLAYER.JUMP)
+
+      for (let i = 24; i < config.width; i = i + 90) {
+        this.add.image(i, config.height - 50, ASSET_KEYS.PLATFORMS, 2)        
+      }
+    
+    this.add.image(24, config.height - 90, ASSET_KEYS.PLAYER.JUMP)
   }
     
     // runs on every frame
