@@ -13,6 +13,7 @@ let isOnGround = true
 const ASSET_KEYS = {
   BACKGROUND: "background",
   PLATFORMS: "platforms",
+  STRAWBERRY: "strawberry",
   PLAYER: {
     FALL: "player_fall",
     HIT: "player_hit",
@@ -39,6 +40,8 @@ class GameScene extends Phaser.Scene {
     this.load.spritesheet(ASSET_KEYS.PLAYER.RUN, "/assets/player/run.png", { frameWidth: 32, frameHeight: 32 })
 
     this.load.spritesheet(ASSET_KEYS.PLATFORMS, "/assets/terrain.png", { frameWidth: 48, frameHeight: 48 })
+
+    this.load.spritesheet(ASSET_KEYS.STRAWBERRY, "/assets/items/strawberry.png", { frameWidth: 32, frameHeight: 32 })
   }
 
   // handle the preloaded assets here
@@ -114,7 +117,22 @@ class GameScene extends Phaser.Scene {
 
       this.platformGroup.add(platform, true)
     }
+
+    this.anims.create({
+      key: "spin",
+      frameRate: 24,
+      frames: this.anims.generateFrameNumbers(ASSET_KEYS.STRAWBERRY, { start: 0, end: 16 }),
+      repeat: -1
+    });
+
+    this.platformGroup.children.each(platform => {
+      let strawberry = this.physics.add.sprite(platform.body.position.x + (platform.body.width * .5), config.height - 100, ASSET_KEYS.STRAWBERRY).setImmovable(true)
+      strawberry.body.setCollisionCategory(2)
+      strawberry.body.setAllowGravity(false);
+      strawberry.anims.play("spin")
+    })
   }
+
 }
 
 const config = {
