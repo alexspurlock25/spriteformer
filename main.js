@@ -30,18 +30,21 @@ class GameScene extends Phaser.Scene {
 
   // prelaod assets here
   preload() {
-    this.load.image(ASSET_KEYS.BACKGROUND, "/assets/background.png")
+    this.load.image(ASSET_KEYS.BACKGROUND, "/public/assets/background.png")
     
     // player
-    this.load.spritesheet(ASSET_KEYS.PLAYER.FALL, "/assets/player/fall.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.HIT, "/assets/player/hit.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.IDLE, "/assets/player/idle.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.JUMP, "/assets/player/jump.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.RUN, "/assets/player/run.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.FALL, "/public/assets/player/fall.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.HIT, "/public/assets/player/hit.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.IDLE, "/public/assets/player/idle.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.JUMP, "/public/assets/player/jump.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.RUN, "/public/assets/player/run.png", { frameWidth: 32, frameHeight: 32 })
 
-    this.load.spritesheet(ASSET_KEYS.PLATFORMS, "/assets/terrain.png", { frameWidth: 48, frameHeight: 48 })
+    this.load.spritesheet(ASSET_KEYS.PLATFORMS, "/public/assets/terrain.png", { frameWidth: 48, frameHeight: 48 })
 
-    this.load.spritesheet(ASSET_KEYS.STRAWBERRY, "/assets/items/strawberry.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.STRAWBERRY, "/public/assets/items/strawberry.png", { frameWidth: 32, frameHeight: 32 })
+
+    //music & audio
+    this.load.audio("background_music", "/public/assets/Audio/backgroundgame.mp3");
   }
 
   // handle the preloaded assets here
@@ -57,7 +60,23 @@ class GameScene extends Phaser.Scene {
 
     this.physics.add.collider(this.player, this.platformGroup, () => { isOnGround = true })
 
+    //music config
+    this.music = this.sound.add("background_music");
+
+    var musicConfig = {
+      mute: false,
+      volume: 1,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: false,
+      delay: 0,
+    }
+
+    this.music.play(musicConfig);
+
   }
+  
     
   // runs on every frame
   update() {
