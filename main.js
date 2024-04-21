@@ -46,6 +46,7 @@ class GameScene extends Phaser.Scene {
     //music & audio
     this.load.audio("background_music", "/public/assets/Audio/backgroundgame.mp3");
     this.load.audio("death_sound", "/public/assets/Audio/Death_Sound.mp3");
+    this.load.audio("jump_sound", "/public/assets/Audio/Jumping.mp3");
   }
 
   // handle the preloaded assets here
@@ -78,6 +79,7 @@ class GameScene extends Phaser.Scene {
 
     //audio config
     this.deathsound = this.sound.add("death_sound", {volume: 0.5});
+    this.jumpsound = this.sound.add("jump_sound", {volume: 0.5});
 
   }
   
@@ -98,6 +100,7 @@ class GameScene extends Phaser.Scene {
 
     if (this.cursor.space.isDown && isOnGround == true) {
       this.player.setVelocityY(-playerSpeed).anims.play("jump", true);
+      this.jumpsound.play();
       isOnGround = false
     } 
 
@@ -171,6 +174,7 @@ class GameScene extends Phaser.Scene {
     this.resetPlayerPos(player);
     
     //tween to make player flash
+    this.player.alpha = 1
     var tween = this.tweens.add({
       targets: this.player,
       alpha: 0.5,
