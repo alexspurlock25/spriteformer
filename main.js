@@ -45,6 +45,7 @@ class GameScene extends Phaser.Scene {
 
     //music & audio
     this.load.audio("background_music", "/public/assets/Audio/backgroundgame.mp3");
+    this.load.audio("death_sound", "/public/assets/Audio/Death_Sound.mp3");
   }
 
   // handle the preloaded assets here
@@ -65,15 +66,18 @@ class GameScene extends Phaser.Scene {
 
     var musicConfig = {
       mute: false,
-      volume: 1,
+      volume: .25,
       rate: 1,
       detune: 0,
       seek: 0,
-      loop: false,
+      loop: true,
       delay: 0,
     }
 
     this.music.play(musicConfig);
+
+    //audio config
+    this.deathsound = this.sound.add("death_sound", {volume: 0.5});
 
   }
   
@@ -96,6 +100,11 @@ class GameScene extends Phaser.Scene {
       this.player.setVelocityY(-playerSpeed).anims.play("jump", true);
       isOnGround = false
     } 
+
+
+    //Check to see is player is in void
+    if(this.player.y > 720)
+      {this.deadPlayer(this.player);}
   }
 
   createPlayer() {
@@ -152,7 +161,36 @@ class GameScene extends Phaser.Scene {
     })
   }
 
+
+
+  deadPlayer(player) {
+    //sound effect   
+    this.deathsound.play();
+    
+    //reset the player
+    this.resetPlayerPos(player);
+    
+    //tween to make player flash
+    var tween = this.tweens.add({
+      targets: this.player,
+      alpha: 0.5,
+      ease: 'Power1',
+      duration: 200,
+      repeat: 4,
+      yoyo: true
+    });
+
+    
+  }
+  
+  resetPlayerPos(player) {
+    player.y = 580;
+    player.x = 24;
+  }
+
 }
+
+
 
 const config = {
   type: Phaser.WEBGL,
