@@ -9,7 +9,11 @@ A basic 2D platformer game created using Phaser, jump from platform to platform 
 
 
 Assets Optained From:
+https://pixelfrog-assets.itch.io/pixel-adventure-1
 
 Music Obtained From:
+Pixabay - artist: modemode
+Youtube - Rick Astley
 
 Sound Effects Obtained From:
+Pixabay - artist: various

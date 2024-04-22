@@ -34,23 +34,35 @@ class MenuScene extends Phaser.Scene {
     this.load.image("background", "/public/assets/background.png")
     this.load.image("background2", "/public/assets/background2.png")
     this.load.bitmapFont("titleFont", "/public/assets/bitmaps/Unnamed.png", "/public/assets/bitmaps/Unnamed.xml")
+
+    //music & audio
+    this.load.audio("button1", "/public/assets/Audio/button_press.mp3");
   }
 
   create() {
+    //Deal Background for Main Menu
     this.background = this.add.tileSprite(0, 0, config.width, config.height, "background")
     .setOrigin(0, 0)
     this.background2 = this.add.tileSprite(0, 0, config.width, config.height, "background2")
     .setOrigin(0, 0)
    
+    //"Spriteformer" title
     this.text1 = this.add.bitmapText(130, 100, "titleFont", "Spriteformer", 100);
-    //this.scoretext1 = this.add.text(150, 100, "Spriteformer", {fontSize: '100px', fill: '#000'});
-
-
     this.onStart();
 
+    //Button to Change Scene to First Level
+    const startButton = this.add.bitmapText(420, 400, "titleFont", "Play", 60);
+    startButton.setInteractive();
+    startButton.on('pointerdown', function (pointer) {this.scene.start('game-scene'); this.buttonSound.play();}, this);
+    
+
+
+    //audio
+    this.buttonSound = this.sound.add("button1", {volume: 0.5});
   }
 
   update() {
+    //Moves backgrounds
     this.background.tilePositionX -= -0.15;
     this.background2.tilePositionX -= -0.25;
     
@@ -58,6 +70,7 @@ class MenuScene extends Phaser.Scene {
 
 
   onStart() {
+    //Makes "Spriteformer" Flash
     var tween = this.tweens.add({
       targets: this.text1,
       alpha: 0.5,
