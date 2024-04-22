@@ -37,6 +37,8 @@ class MenuScene extends Phaser.Scene {
 
     //music & audio
     this.load.audio("button1", "/public/assets/Audio/button_press.mp3");
+    //this.load.audio("background_music", "/public/assets/Audio/backgroundgame.mp3");
+    this.load.audio("background_music2", "/public/assets/Audio/backgroundgame2.mp3");
   }
 
   create() {
@@ -53,12 +55,26 @@ class MenuScene extends Phaser.Scene {
     //Button to Change Scene to First Level
     const startButton = this.add.bitmapText(420, 400, "titleFont", "Play", 60);
     startButton.setInteractive();
-    startButton.on('pointerdown', function (pointer) {this.scene.start('game-scene'); this.buttonSound.play();}, this);
+    startButton.on('pointerdown', function (pointer) {this.scene.start('game-scene'); this.buttonSound.play(); this.music.stop(musicConfig);}, this);
     
 
 
     //audio
     this.buttonSound = this.sound.add("button1", {volume: 0.5});
+
+    this.music = this.sound.add("background_music2");
+
+    var musicConfig = {
+      mute: false,
+      volume: .25,
+      rate: .75,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 0,
+    }
+
+    this.music.play(musicConfig);
   }
 
   update() {
@@ -108,6 +124,12 @@ class GameScene extends Phaser.Scene {
     this.load.audio("background_music", "/public/assets/Audio/backgroundgame.mp3");
     this.load.audio("death_sound", "/public/assets/Audio/Death_Sound.mp3");
     this.load.audio("jump_sound", "/public/assets/Audio/Jumping.mp3");
+
+    //unused sound effects
+    this.load.audio("flag_sound", "/public/assets/Audio/level_win.mp3");
+    this.load.audio("pickup_sound", "/public/assets/Audio/pickup.mp3");
+    
+
   }
 
   // handle the preloaded assets here
@@ -141,6 +163,10 @@ class GameScene extends Phaser.Scene {
     //audio config
     this.deathsound = this.sound.add("death_sound", {volume: 0.5});
     this.jumpsound = this.sound.add("jump_sound", {volume: 0.5});
+
+    //unused audio config
+    this.flagsound = this.sound.add("flag_sound", {volume: 0.5});
+    this.pickupsound = this.sound.add("pickup_sound", {volume: 0.5});
 
   }
   
