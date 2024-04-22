@@ -23,6 +23,33 @@ const ASSET_KEYS = {
   }
 }
 
+
+
+
+class MenuScene extends Phaser.Scene {
+  constructor() {
+    super("menu-scene");
+  }
+  preload() {
+    this.load.image("background", "/public/assets/background.png")
+    this.load.image("background2", "/public/assets/background2.png")
+  }
+
+  create() {
+    this.background = this.add.tileSprite(0, 0, config.width, config.height, "background")
+    .setOrigin(0, 0)
+    this.background2 = this.add.tileSprite(0, 0, config.width, config.height, "background2")
+    .setOrigin(0, 0)
+  }
+
+  update() {
+    this.background.tilePositionX -= -0.15;
+    this.background2.tilePositionX -= -0.25;
+  }
+
+}
+
+
 class GameScene extends Phaser.Scene {
   constructor() {
     super("game-scene");
@@ -208,7 +235,7 @@ const config = {
       debug: true
     },
   },
-  scene: [GameScene],
+  scene: [MenuScene, GameScene],
 };
   
 const game = new Phaser.Game(config);
