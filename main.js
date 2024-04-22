@@ -23,6 +23,81 @@ const ASSET_KEYS = {
   }
 }
 
+
+
+
+class MenuScene extends Phaser.Scene {
+  constructor() {
+    super("menu-scene");
+  }
+  preload() {
+    this.load.image("background", "/public/assets/background.png")
+    this.load.image("background2", "/public/assets/background2.png")
+    this.load.bitmapFont("titleFont", "/public/assets/bitmaps/Unnamed.png", "/public/assets/bitmaps/Unnamed.xml")
+
+    //music & audio
+    this.load.audio("button1", "/public/assets/Audio/button_press.mp3");
+    this.load.audio("background_music2", "/public/assets/Audio/backgroundgame2.mp3");
+  }
+
+  create() {
+    //Deal Background for Main Menu
+    this.background = this.add.tileSprite(0, 0, config.width, config.height, "background")
+    .setOrigin(0, 0)
+    this.background2 = this.add.tileSprite(0, 0, config.width, config.height, "background2")
+    .setOrigin(0, 0)
+   
+    //"Spriteformer" title
+    this.text1 = this.add.bitmapText(130, 100, "titleFont", "Spriteformer", 100);
+    this.onStart();
+
+    //Button to Change Scene to First Level
+    const startButton = this.add.bitmapText(420, 400, "titleFont", "Play", 60);
+    startButton.setInteractive();
+    startButton.on('pointerdown', function (pointer) {this.scene.start('game-scene'); this.buttonSound.play(); this.music.stop(musicConfig);}, this);
+
+    //music & audio
+    this.buttonSound = this.sound.add("button1", {volume: 0.5});
+
+    this.music = this.sound.add("background_music2");
+
+    var musicConfig = {
+      mute: false,
+      volume: .25,
+      rate: .75,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 0,
+    }
+
+    this.music.play(musicConfig);
+  }
+
+
+  update() {
+    //Moves backgrounds
+    this.background.tilePositionX -= -0.15;
+    this.background2.tilePositionX -= -0.25;
+    
+  }
+
+
+  onStart() {
+    //Makes "Spriteformer" Flash
+    var tween = this.tweens.add({
+      targets: this.text1,
+      alpha: 0.5,
+      ease: 'Power1',
+      duration: 2000,
+      repeat: -1,
+      yoyo: true
+    });
+  }
+
+}
+
+
 class GameScene extends Phaser.Scene {
   constructor() {
     super("game-scene");
@@ -30,18 +105,30 @@ class GameScene extends Phaser.Scene {
 
   // prelaod assets here
   preload() {
-    this.load.image(ASSET_KEYS.BACKGROUND, "/assets/background.png")
+    this.load.image(ASSET_KEYS.BACKGROUND, "/public/assets/background.png")
     
     // player
-    this.load.spritesheet(ASSET_KEYS.PLAYER.FALL, "/assets/player/fall.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.HIT, "/assets/player/hit.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.IDLE, "/assets/player/idle.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.JUMP, "/assets/player/jump.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.RUN, "/assets/player/run.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.FALL, "/public/assets/player/fall.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.HIT, "/public/assets/player/hit.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.IDLE, "/public/assets/player/idle.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.JUMP, "/public/assets/player/jump.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.RUN, "/public/assets/player/run.png", { frameWidth: 32, frameHeight: 32 })
 
-    this.load.spritesheet(ASSET_KEYS.PLATFORMS, "/assets/terrain.png", { frameWidth: 48, frameHeight: 48 })
+    this.load.spritesheet(ASSET_KEYS.PLATFORMS, "/public/assets/terrain.png", { frameWidth: 48, frameHeight: 48 })
 
-    this.load.spritesheet(ASSET_KEYS.STRAWBERRY, "/assets/items/strawberry.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.STRAWBERRY, "/public/assets/items/strawberry.png", { frameWidth: 32, frameHeight: 32 })
+
+    //music & audio
+    this.load.audio("background_music", "/public/assets/Audio/backgroundgame.mp3");
+    this.load.audio("death_sound", "/public/assets/Audio/Death_Sound.mp3");
+    this.load.audio("jump_sound", "/public/assets/Audio/Jumping.mp3");
+
+    //unused sound effects
+    this.load.audio("flag_sound", "/public/assets/Audio/level_win.mp3");
+    this.load.audio("pickup_sound", "/public/assets/Audio/pickup.mp3");
+    this.load.audio("rickRoll", "/public/assets/Audio/rickRoll.mp3");
+    
+
   }
 
   // handle the preloaded assets here
@@ -57,7 +144,32 @@ class GameScene extends Phaser.Scene {
 
     this.physics.add.collider(this.player, this.platformGroup, () => { isOnGround = true })
 
+    //music config
+    this.music = this.sound.add("background_music");
+
+    var musicConfig = {
+      mute: false,
+      volume: .25,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 0,
+    }
+
+    this.music.play(musicConfig);
+
+    //audio config
+    this.deathsound = this.sound.add("death_sound", {volume: 0.5});
+    this.jumpsound = this.sound.add("jump_sound", {volume: 0.5});
+
+    //unused audio config
+    this.flagsound = this.sound.add("flag_sound", {volume: 0.5});
+    this.pickupsound = this.sound.add("pickup_sound", {volume: 0.5});
+    this.rickRoll = this.sound.add("rickRoll", {volume: 0.5});
+
   }
+  
     
   // runs on every frame
   update() {
@@ -75,8 +187,14 @@ class GameScene extends Phaser.Scene {
 
     if (this.cursor.space.isDown && isOnGround == true) {
       this.player.setVelocityY(-playerSpeed).anims.play("jump", true);
+      this.jumpsound.play();
       isOnGround = false
     } 
+
+
+    //Check to see is player is in void
+    if(this.player.y > 720)
+      {this.deadPlayer(this.player);}
   }
 
   createPlayer() {
@@ -133,7 +251,37 @@ class GameScene extends Phaser.Scene {
     })
   }
 
+
+
+  deadPlayer(player) {
+    //sound effect   
+    this.deathsound.play();
+    
+    //reset the player
+    this.resetPlayerPos(player);
+    
+    //tween to make player flash
+    this.player.alpha = 1
+    var tween = this.tweens.add({
+      targets: this.player,
+      alpha: 0.5,
+      ease: 'Power1',
+      duration: 200,
+      repeat: 4,
+      yoyo: true
+    });
+
+    
+  }
+  
+  resetPlayerPos(player) {
+    player.y = 580;
+    player.x = 24;
+  }
+
 }
+
+
 
 const config = {
   type: Phaser.WEBGL,
@@ -147,7 +295,7 @@ const config = {
       debug: true
     },
   },
-  scene: [GameScene],
+  scene: [MenuScene, GameScene],
 };
   
 const game = new Phaser.Game(config);
