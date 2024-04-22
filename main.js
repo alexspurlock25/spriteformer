@@ -33,6 +33,7 @@ class MenuScene extends Phaser.Scene {
   preload() {
     this.load.image("background", "/public/assets/background.png")
     this.load.image("background2", "/public/assets/background2.png")
+    this.load.bitmapFont("titleFont", "/public/assets/bitmaps/Unnamed.png", "/public/assets/bitmaps/Unnamed.xml")
   }
 
   create() {
@@ -40,11 +41,31 @@ class MenuScene extends Phaser.Scene {
     .setOrigin(0, 0)
     this.background2 = this.add.tileSprite(0, 0, config.width, config.height, "background2")
     .setOrigin(0, 0)
+   
+    this.text1 = this.add.bitmapText(130, 100, "titleFont", "Spriteformer", 100);
+    //this.scoretext1 = this.add.text(150, 100, "Spriteformer", {fontSize: '100px', fill: '#000'});
+
+
+    this.onStart();
+
   }
 
   update() {
     this.background.tilePositionX -= -0.15;
     this.background2.tilePositionX -= -0.25;
+    
+  }
+
+
+  onStart() {
+    var tween = this.tweens.add({
+      targets: this.text1,
+      alpha: 0.5,
+      ease: 'Power1',
+      duration: 2000,
+      repeat: -1,
+      yoyo: true
+    });
   }
 
 }
