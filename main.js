@@ -37,7 +37,6 @@ class MenuScene extends Phaser.Scene {
 
     //music & audio
     this.load.audio("button1", "/public/assets/Audio/button_press.mp3");
-    //this.load.audio("background_music", "/public/assets/Audio/backgroundgame.mp3");
     this.load.audio("background_music2", "/public/assets/Audio/backgroundgame2.mp3");
   }
 
@@ -56,10 +55,8 @@ class MenuScene extends Phaser.Scene {
     const startButton = this.add.bitmapText(420, 400, "titleFont", "Play", 60);
     startButton.setInteractive();
     startButton.on('pointerdown', function (pointer) {this.scene.start('game-scene'); this.buttonSound.play(); this.music.stop(musicConfig);}, this);
-    
 
-
-    //audio
+    //music & audio
     this.buttonSound = this.sound.add("button1", {volume: 0.5});
 
     this.music = this.sound.add("background_music2");
@@ -76,6 +73,7 @@ class MenuScene extends Phaser.Scene {
 
     this.music.play(musicConfig);
   }
+
 
   update() {
     //Moves backgrounds
@@ -127,7 +125,8 @@ class GameScene extends Phaser.Scene {
 
     //unused sound effects
     this.load.audio("flag_sound", "/public/assets/Audio/level_win.mp3");
-    this.load.audio("pickup_sound", "/public/assets/Audio/pickup.mp3");
+    this.load.audio("pickup_sound", "/public/assets/Audio/pickup.mp3");\
+    this.load.audio("rickRoll", "/public/assets/Audio/rickRoll.mp3");
     
 
   }
@@ -167,6 +166,7 @@ class GameScene extends Phaser.Scene {
     //unused audio config
     this.flagsound = this.sound.add("flag_sound", {volume: 0.5});
     this.pickupsound = this.sound.add("pickup_sound", {volume: 0.5});
+    this.rickRoll = this.sound.add("rickRoll", {volume: 0.5});
 
   }
   
