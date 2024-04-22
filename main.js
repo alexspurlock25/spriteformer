@@ -125,7 +125,7 @@ class GameScene extends Phaser.Scene {
 
     //unused sound effects
     this.load.audio("flag_sound", "/public/assets/Audio/level_win.mp3");
-    this.load.audio("pickup_sound", "/public/assets/Audio/pickup.mp3");\
+    this.load.audio("pickup_sound", "/public/assets/Audio/pickup.mp3");
     this.load.audio("rickRoll", "/public/assets/Audio/rickRoll.mp3");
     
 
