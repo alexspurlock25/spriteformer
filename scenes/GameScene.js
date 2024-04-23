@@ -29,9 +29,9 @@ export class GameScene extends Phaser.Scene {
 
     this.load.spritesheet(ASSET_KEYS.PLATFORMS, "./assets/terrain.png", { frameWidth: 48, frameHeight: 48 })
 
-    this.load.spritesheet(ASSET_KEYS.STRAWBERRY, "./assets/items/strawberry.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.STRAWBERRY, "./assets/Items/strawberry.png", { frameWidth: 32, frameHeight: 32 })
 
-    this.load.spritesheet(ASSET_KEYS.FLAG, "./assets/items/flag.png", { frameWidth: 64, frameHeight: 64 })
+    this.load.spritesheet(ASSET_KEYS.FLAG, "./assets/Items/flag.png", { frameWidth: 64, frameHeight: 64 })
 
     //music & audio
     this.load.audio("background_music", "./assets/Audio/backgroundgame.mp3");
