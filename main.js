@@ -11,7 +11,8 @@ export const size = {
 export const gravity = 400
 
 export const ASSET_KEYS = {
-  BACKGROUND: "background",
+  NORMAL_BACKGROUND: "background",
+  GLUMMY_BACKGROUND: "glummy_background",
   PLATFORMS: "platforms",
   STRAWBERRY: "strawberry",
   FLAG: "flag",

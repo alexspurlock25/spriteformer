@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { ASSET_KEYS, config } from "../main";
+import { getWeatherCode } from "../weatherapi";
 
 const playerSpeed = 200
 let isOnGround = true
@@ -10,10 +11,14 @@ export class GameScene extends Phaser.Scene {
 		super("GameScene");
     this.playerScoreText;
     this.playerScore = 0;
+    this.weatherCode = 0;
+    this.background;
+    this.platformIndex = 2;
 	}
 
   preload() {
-    this.load.image(ASSET_KEYS.BACKGROUND, "../public/assets/background.png")
+    this.load.image(ASSET_KEYS.NORMAL_BACKGROUND, "../public/assets/background.png")
+    this.load.image(ASSET_KEYS.GLUMMY_BACKGROUND, "../public/assets/glummy.png")
 
     // player
     this.load.spritesheet(ASSET_KEYS.PLAYER.FALL, "../public/assets/player/fall.png", { frameWidth: 32, frameHeight: 32 })
@@ -40,12 +45,28 @@ export class GameScene extends Phaser.Scene {
   }  
 
   create() {
+    getWeatherCode().then(response => this.weatherCode = response)
     this.platformGroup = this.add.group()
     this.fruitGroup = this.add.group()
 
-    this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.BACKGROUND)
+    if (this.weatherCode >= 50 || this.weatherCode < 100) {
+      this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.GLUMMY_BACKGROUND)
       .setOrigin(0, 0)
-      
+      this.platformIndex = 0
+    } else {
+      this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.NORMAL_BACKGROUND)
+      .setOrigin(0, 0)
+      this.platformIndex = 0
+    }
+
+    if (this.weatherCode >= 50 || this.weatherCode < 100) {
+      this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.GLUMMY_BACKGROUND)
+      .setOrigin(0, 0)
+    } else {
+      this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.NORMAL_BACKGROUND)
+      .setOrigin(0, 0)
+    }
+
     this.createMusic()
     this.createPlayer()
     this.createLevel()
@@ -128,7 +149,7 @@ export class GameScene extends Phaser.Scene {
       repeat: -1
     });
 
-    let first = this.physics.add.sprite(24, config.height - 60, ASSET_KEYS.PLATFORMS, 2).setImmovable(true)
+    let first = this.physics.add.sprite(24, config.height - 60, ASSET_KEYS.PLATFORMS, this.platformIndex).setImmovable(true)
     first.body.setAllowGravity(false);
     this.platformGroup.add(first, true)
 
@@ -141,12 +162,12 @@ export class GameScene extends Phaser.Scene {
     for (let i = 1; i <= numPlatforms; i++) {
       let randomY = this.getRandomInt(config.height - 100, config.height)
       let randomX = intervalX * i;
-      let platform = this.physics.add.sprite(randomX, randomY, ASSET_KEYS.PLATFORMS, 2).setImmovable(true)
+      let platform = this.physics.add.sprite(randomX, randomY, ASSET_KEYS.PLATFORMS, this.platformIndex).setImmovable(true)
       platform.body.setAllowGravity(false);
       this.platformGroup.add(platform, true)
     }
 
-    let last = this.physics.add.sprite(config.width - 24, config.height - 60, ASSET_KEYS.PLATFORMS, 2).setImmovable(true)
+    let last = this.physics.add.sprite(config.width - 24, config.height - 60, ASSET_KEYS.PLATFORMS, this.platformIndex).setImmovable(true)
     last.body.setAllowGravity(false);
     this.platformGroup.add(last, true)
 

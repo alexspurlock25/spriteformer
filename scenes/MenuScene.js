@@ -7,7 +7,7 @@ export class MenuScene extends Phaser.Scene {
 	}
   
   preload() {
-    this.load.image(ASSET_KEYS.BACKGROUND, "../public/assets/background.png")
+    this.load.image(ASSET_KEYS.NORMAL_BACKGROUND, "../public/assets/background.png")
     this.load.image("background2", "../public/assets/background2.png")
     this.load.bitmapFont("titleFont", "../public/assets/bitmaps/Unnamed.png", "../public/assets/bitmaps/Unnamed.xml")
 
