@@ -17,31 +17,31 @@ export class GameScene extends Phaser.Scene {
 	}
 
   preload() {
-    this.load.image(ASSET_KEYS.NORMAL_BACKGROUND, "../public/assets/background.png")
-    this.load.image(ASSET_KEYS.GLUMMY_BACKGROUND, "../public/assets/glummy.png")
+    this.load.image(ASSET_KEYS.NORMAL_BACKGROUND, "./assets/background.png")
+    this.load.image(ASSET_KEYS.GLUMMY_BACKGROUND, "./assets/glummy.png")
 
     // player
-    this.load.spritesheet(ASSET_KEYS.PLAYER.FALL, "../public/assets/player/fall.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.HIT, "../public/assets/player/hit.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.IDLE, "../public/assets/player/idle.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.JUMP, "../public/assets/player/jump.png", { frameWidth: 32, frameHeight: 32 })
-    this.load.spritesheet(ASSET_KEYS.PLAYER.RUN, "../public/assets/player/run.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.FALL, "./assets/player/fall.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.HIT, "./assets/player/hit.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.IDLE, "./assets/player/idle.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.JUMP, "./assets/player/jump.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.PLAYER.RUN, "./assets/player/run.png", { frameWidth: 32, frameHeight: 32 })
 
-    this.load.spritesheet(ASSET_KEYS.PLATFORMS, "../public/assets/terrain.png", { frameWidth: 48, frameHeight: 48 })
+    this.load.spritesheet(ASSET_KEYS.PLATFORMS, "./assets/terrain.png", { frameWidth: 48, frameHeight: 48 })
 
-    this.load.spritesheet(ASSET_KEYS.STRAWBERRY, "../public/assets/items/strawberry.png", { frameWidth: 32, frameHeight: 32 })
+    this.load.spritesheet(ASSET_KEYS.STRAWBERRY, "./assets/items/strawberry.png", { frameWidth: 32, frameHeight: 32 })
 
-    this.load.spritesheet(ASSET_KEYS.FLAG, "../public/assets/items/flag.png", { frameWidth: 64, frameHeight: 64 })
+    this.load.spritesheet(ASSET_KEYS.FLAG, "./assets/items/flag.png", { frameWidth: 64, frameHeight: 64 })
 
     //music & audio
-    this.load.audio("background_music", "../public/assets/Audio/backgroundgame.mp3");
-    this.load.audio("death_sound", "../public/assets/Audio/Death_Sound.mp3");
-    this.load.audio("jump_sound", "../public/assets/Audio/Jumping.mp3");
+    this.load.audio("background_music", "./assets/Audio/backgroundgame.mp3");
+    this.load.audio("death_sound", "./assets/Audio/Death_Sound.mp3");
+    this.load.audio("jump_sound", "./assets/Audio/Jumping.mp3");
 
     //unused sound effects
-    this.load.audio("flag_sound", "../public/assets/Audio/level_win.mp3");
-    this.load.audio("pickup_sound", "../public/assets/Audio/pickup.mp3");
-    this.load.audio("rickRoll", "../public/assets/Audio/rickRoll.mp3");
+    this.load.audio("flag_sound", "./assets/Audio/level_win.mp3");
+    this.load.audio("pickup_sound", "./assets/Audio/pickup.mp3");
+    this.load.audio("rickRoll", "./assets/Audio/rickRoll.mp3");
   }  
 
   create() {

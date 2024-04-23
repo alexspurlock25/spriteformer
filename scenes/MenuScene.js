@@ -7,13 +7,13 @@ export class MenuScene extends Phaser.Scene {
 	}
   
   preload() {
-    this.load.image(ASSET_KEYS.NORMAL_BACKGROUND, "../public/assets/background.png")
-    this.load.image("background2", "../public/assets/background2.png")
-    this.load.bitmapFont("titleFont", "../public/assets/bitmaps/Unnamed.png", "../public/assets/bitmaps/Unnamed.xml")
+    this.load.image(ASSET_KEYS.NORMAL_BACKGROUND, "./assets/background.png")
+    this.load.image("background2", "./assets/background2.png")
+    this.load.bitmapFont("titleFont", "./assets/bitmaps/Unnamed.png", "./assets/bitmaps/Unnamed.xml")
 
     //music & audio
-    this.load.audio("button1", "../public/assets/Audio/button_press.mp3");
-    this.load.audio("background_music2", "../public/assets/Audio/backgroundgame2.mp3");
+    this.load.audio("button1", "./assets/Audio/button_press.mp3");
+    this.load.audio("background_music2", "./assets/Audio/backgroundgame2.mp3");
   }
 
   create() {
