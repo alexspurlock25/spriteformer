@@ -132,30 +132,31 @@ export class GameScene extends Phaser.Scene {
     first.body.setAllowGravity(false);
     this.platformGroup.add(first, true)
 
-    let last = this.physics.add.sprite(config.width - 24, config.height - 60, ASSET_KEYS.PLATFORMS, 2).setImmovable(true)
-    last.body.setAllowGravity(false);
-    this.platformGroup.add(last, true)
-
     this.flag = this.add.sprite(config.width - 24, config.height - 116, ASSET_KEYS.FLAG)
     this.flag.anims.play("wave")
 
-    const numPlatforms = 5;
-    const intervalX = config.width / numPlatforms + 1
+    const numPlatforms = 6;
+    const intervalX = (config.width - 100) / numPlatforms + 1
 
     for (let i = 1; i <= numPlatforms; i++) {
       let randomY = this.getRandomInt(config.height - 100, config.height)
-      // let randomX = this.getRandomInt(j, config.width)
       let randomX = intervalX * i;
       let platform = this.physics.add.sprite(randomX, randomY, ASSET_KEYS.PLATFORMS, 2).setImmovable(true)
       platform.body.setAllowGravity(false);
       this.platformGroup.add(platform, true)
     }
 
-    this.platformGroup.children.each(platform => {
-      let strawberry = this.physics.add.sprite(platform.body.position.x + (platform.body.width * .5), config.height - 100, ASSET_KEYS.STRAWBERRY).setImmovable(true)
-      strawberry.body.setAllowGravity(false);
-      strawberry.anims.play("spin")
-      this.fruitGroup.add(strawberry, true)
+    let last = this.physics.add.sprite(config.width - 24, config.height - 60, ASSET_KEYS.PLATFORMS, 2).setImmovable(true)
+    last.body.setAllowGravity(false);
+    this.platformGroup.add(last, true)
+
+    this.platformGroup.children.each((platform, index) => {
+      if (index != 0 || index != this.platformGroup.children.getArray().length - 1) {
+        let strawberry = this.physics.add.sprite(platform.body.position.x + (platform.body.width * .5), platform.body.position.y - 30, ASSET_KEYS.STRAWBERRY).setImmovable(true)
+        strawberry.body.setAllowGravity(false);
+        strawberry.anims.play("spin")
+        this.fruitGroup.add(strawberry, true)
+      }
     })
 
     this.physics.add.overlap(
