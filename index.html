@@ -8,7 +8,10 @@
     <title>Spriteformer</title>
   </head>
   <body class="bg-primary-subtle container mx-auto text-center">
-    <header><h1>Spriteformer!</h1></header>
+    <header class="d-flex justify-content-evenly my-2">
+      <h1>Spriteformer!</h1>
+      <button id="reset-button" class="btn btn-danger">Reset</button>
+    </header>
     <main>
       <canvas id="gameCanvas"></canvas>
     </main>
@@ -16,5 +19,11 @@
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script type="module" src="/main.js"></script>
+    <script>
+      const resetButton = document.getElementById("reset-button")
+      resetButton.addEventListener("click", (event) => {
+        location.reload()
+      })
+    </script>
   </body>
 </html>
