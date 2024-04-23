@@ -49,8 +49,6 @@ export class MenuScene extends Phaser.Scene {
     }
 
     this.music.play(musicConfig);
-
-		this.editorCreate();
 	}
 
   update() {

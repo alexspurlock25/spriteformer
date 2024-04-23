@@ -8,6 +8,8 @@ export class GameScene extends Phaser.Scene {
 
 	constructor() {
 		super("GameScene");
+    this.playerScoreText;
+    this.playerScore = 0;
 	}
 
   preload() {
@@ -24,6 +26,8 @@ export class GameScene extends Phaser.Scene {
 
     this.load.spritesheet(ASSET_KEYS.STRAWBERRY, "../public/assets/items/strawberry.png", { frameWidth: 32, frameHeight: 32 })
 
+    this.load.spritesheet(ASSET_KEYS.FLAG, "../public/assets/items/flag.png", { frameWidth: 64, frameHeight: 64 })
+
     //music & audio
     this.load.audio("background_music", "../public/assets/Audio/backgroundgame.mp3");
     this.load.audio("death_sound", "../public/assets/Audio/Death_Sound.mp3");
@@ -39,42 +43,22 @@ export class GameScene extends Phaser.Scene {
     this.platformGroup = this.add.group()
     this.fruitGroup = this.add.group()
 
-    this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.BACKGROUND)
+    this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.BACKGROUND)
       .setOrigin(0, 0)
-
-    this.createLevel()
+      
+    this.createMusic()
     this.createPlayer()
+    this.createLevel()
 
     this.physics.add.collider(this.player, this.platformGroup, () => { isOnGround = true })
 
-    //music config
-    this.music = this.sound.add("background_music");
-
-    var musicConfig = {
-      mute: false,
-      volume: .25,
-      rate: 1,
-      detune: 0,
-      seek: 0,
-      loop: true,
-      delay: 0,
-    }
-
-    this.music.play(musicConfig);
-
-    //audio config
-    this.deathsound = this.sound.add("death_sound", {volume: 0.5});
-    this.jumpsound = this.sound.add("jump_sound", {volume: 0.5});
-
-    //unused audio config
-    this.flagsound = this.sound.add("flag_sound", {volume: 0.5});
-    this.pickupsound = this.sound.add("pickup_sound", {volume: 0.5});
-    this.rickRoll = this.sound.add("rickRoll", {volume: 0.5});
-
-    this.editorCreate();
+    this.playerScoreText = this.add.text(40, 40, `Score: ${this.playerScore}`);
 	}
   
   update() {
+    //Moves backgrounds
+    this.background.tilePositionX -= -0.15;
+
     if (this.cursor.left.isDown) {
       this.player.setVelocityX(-playerSpeed).anims.play("run", true);
       this.player.scaleX = -1
@@ -130,14 +114,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   createLevel() {
-    for (let i = 24; i < config.width; i = i + 150) {
-      let platform = this.physics.add.sprite(i, config.height - 60, ASSET_KEYS.PLATFORMS, 2).setImmovable(true)
-      platform.body.setCollisionCategory(1)
-      platform.body.setAllowGravity(false);
-
-      this.platformGroup.add(platform, true)
-    }
-
     this.anims.create({
       key: "spin",
       frameRate: 24,
@@ -145,12 +121,90 @@ export class GameScene extends Phaser.Scene {
       repeat: -1
     });
 
+    this.anims.create({
+      key: "wave",
+      frameRate: 24,
+      frames: this.anims.generateFrameNumbers(ASSET_KEYS.FLAG, { start: 0, end: 9 }),
+      repeat: -1
+    });
+
+    let first = this.physics.add.sprite(24, config.height - 60, ASSET_KEYS.PLATFORMS, 2).setImmovable(true)
+    first.body.setAllowGravity(false);
+    this.platformGroup.add(first, true)
+
+    let last = this.physics.add.sprite(config.width - 24, config.height - 60, ASSET_KEYS.PLATFORMS, 2).setImmovable(true)
+    last.body.setAllowGravity(false);
+    this.platformGroup.add(last, true)
+
+    this.flag = this.add.sprite(config.width - 24, config.height - 116, ASSET_KEYS.FLAG)
+    this.flag.anims.play("wave")
+
+    const numPlatforms = 5;
+    const intervalX = config.width / numPlatforms + 1
+
+    for (let i = 1; i <= numPlatforms; i++) {
+      let randomY = this.getRandomInt(config.height - 100, config.height)
+      // let randomX = this.getRandomInt(j, config.width)
+      let randomX = intervalX * i;
+      let platform = this.physics.add.sprite(randomX, randomY, ASSET_KEYS.PLATFORMS, 2).setImmovable(true)
+      platform.body.setAllowGravity(false);
+      this.platformGroup.add(platform, true)
+    }
+
     this.platformGroup.children.each(platform => {
       let strawberry = this.physics.add.sprite(platform.body.position.x + (platform.body.width * .5), config.height - 100, ASSET_KEYS.STRAWBERRY).setImmovable(true)
-      strawberry.body.setCollisionCategory(2)
       strawberry.body.setAllowGravity(false);
       strawberry.anims.play("spin")
+      this.fruitGroup.add(strawberry, true)
     })
+
+    this.physics.add.overlap(
+      this.player,
+      this.fruitGroup,
+      this.fruitHit,
+      null,
+      this 
+    );
+  }
+
+  getRandomInt(min, max) { 
+    min = Math.ceil(min); 
+    max = Math.floor(max); 
+    return Math.floor(Math.random() * (max - min + 1)) + min; 
+  } 
+
+  fruitHit(player, fruit) {
+    this.pickupsound.play()
+    this.fruitGroup.remove(fruit, true, true)
+    // this.target.setX(this.getRandomX());
+    this.playerScore++;
+    this.playerScoreText.setText(`Score: ${this.playerScore}`);
+  }
+
+  createMusic() {
+    //music config
+    this.music = this.sound.add("background_music");
+
+    var musicConfig = {
+      mute: false,
+      volume: .25,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 0,
+    }
+
+    this.music.play(musicConfig);
+
+    //audio config
+    this.deathsound = this.sound.add("death_sound", {volume: 0.5});
+    this.jumpsound = this.sound.add("jump_sound", {volume: 0.5});
+
+    //unused audio config
+    this.flagsound = this.sound.add("flag_sound", {volume: 0.5});
+    this.pickupsound = this.sound.add("pickup_sound", {volume: 0.5});
+    this.rickRoll = this.sound.add("rickRoll", {volume: 0.5});
   }
 
   deadPlayer(player) {

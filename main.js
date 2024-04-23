@@ -14,6 +14,7 @@ export const ASSET_KEYS = {
   BACKGROUND: "background",
   PLATFORMS: "platforms",
   STRAWBERRY: "strawberry",
+  FLAG: "flag",
   PLAYER: {
     FALL: "player_fall",
     HIT: "player_hit",
@@ -32,7 +33,7 @@ export const config = {
     default: "arcade",
     arcade: {
       gravity: { y: gravity },
-      debug: true
+      debug: false
     },
   },
   scene: [MenuScene, GameScene],
