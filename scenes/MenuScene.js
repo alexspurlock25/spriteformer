@@ -18,7 +18,7 @@ export class MenuScene extends Phaser.Scene {
 
   create() {
     //Deal Background for Main Menu
-    this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.BACKGROUND)
+    this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.NORMAL_BACKGROUND)
     .setOrigin(0, 0)
     console.log(this.background)
     this.background2 = this.add.tileSprite(0, 0, config.width, config.height, "background2")
