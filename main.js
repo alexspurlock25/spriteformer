@@ -1,7 +1,8 @@
 import './style.css'
 
 import { MenuScene } from './scenes/MenuScene';
-import { GameScene } from './scenes/GameScene'
+import { GameScene } from './scenes/GameScene';
+import { PlayAgainScene } from './scenes/PlayAgainScene';
 
 export const size = {
   width: 1000,
@@ -42,7 +43,7 @@ const config = {
       debug: false
     },
   },
-  scene: [MenuScene, GameScene],
+  scene: [MenuScene, GameScene, PlayAgainScene],
 };
   
 const game = new Phaser.Game(config);

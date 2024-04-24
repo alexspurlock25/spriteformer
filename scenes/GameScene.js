@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { ASSET_KEYS, size } from "../main";
 import { getWeatherCode } from "../weatherapi";
 
-const playerSpeed = 200
+const playerSpeed = 250
 let isOnGround = true
 
 export class GameScene extends Phaser.Scene {
@@ -34,7 +34,7 @@ export class GameScene extends Phaser.Scene {
     this.load.spritesheet(ASSET_KEYS.FLAG, "./assets/Items/flag.png", { frameWidth: 64, frameHeight: 64 })
 
     //music & audio
-    this.load.audio("background_music", "./assets/Audio/backgroundgame.mp3");
+    this.load.audio(ASSET_KEYS.SOUND.GAME, "./assets/Audio/backgroundgame.mp3");
     this.load.audio("death_sound", "./assets/Audio/Death_Sound.mp3");
     this.load.audio("jump_sound", "./assets/Audio/Jumping.mp3");
 
@@ -57,14 +57,6 @@ export class GameScene extends Phaser.Scene {
       this.background = this.add.tileSprite(0, 0, size.width, size.height, ASSET_KEYS.NORMAL_BACKGROUND)
       .setOrigin(0, 0)
       this.platformIndex = 0
-    }
-
-    if (this.weatherCode >= 50 || this.weatherCode < 100) {
-      this.background = this.add.tileSprite(0, 0, size.width, size.height, ASSET_KEYS.GLUMMY_BACKGROUND)
-      .setOrigin(0, 0)
-    } else {
-      this.background = this.add.tileSprite(0, 0, size.width, size.height, ASSET_KEYS.NORMAL_BACKGROUND)
-      .setOrigin(0, 0)
     }
 
     this.createMusic()
@@ -153,7 +145,8 @@ export class GameScene extends Phaser.Scene {
     first.body.setAllowGravity(false);
     this.platformGroup.add(first, true)
 
-    this.flag = this.add.sprite(size.width - 24, size.height - 116, ASSET_KEYS.FLAG)
+    this.flag = this.physics.add.sprite(size.width - 24, size.height - 116, ASSET_KEYS.FLAG)
+    this.flag.body.setAllowGravity(false)
     this.flag.anims.play("wave")
 
     const numPlatforms = 6;
@@ -187,13 +180,26 @@ export class GameScene extends Phaser.Scene {
       null,
       this 
     );
+
+    this.physics.add.overlap(
+      this.player,
+      this.flag,
+      this.gameWon,
+      null,
+      this 
+    );
   }
 
   getRandomInt(min, max) { 
     min = Math.ceil(min); 
     max = Math.floor(max); 
     return Math.floor(Math.random() * (max - min + 1)) + min; 
-  } 
+  }
+
+  gameWon(player, flag) {
+    this.scene.start("PlayAgainScene");
+    this.scene.stop("GameScene")
+  }
 
   fruitHit(player, fruit) {
     this.pickupsound.play()
@@ -205,7 +211,7 @@ export class GameScene extends Phaser.Scene {
 
   createMusic() {
     //music config
-    this.music = this.sound.add("background_music");
+    this.music = this.sound.add(ASSET_KEYS.SOUND.GAME);
 
     var musicConfig = {
       mute: false,
