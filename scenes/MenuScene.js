@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { config, ASSET_KEYS } from "../main";
+import { ASSET_KEYS, size } from "../main";
 
 export class MenuScene extends Phaser.Scene {
 	constructor() {
@@ -18,10 +18,10 @@ export class MenuScene extends Phaser.Scene {
 
   create() {
     //Deal Background for Main Menu
-    this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.NORMAL_BACKGROUND)
+    this.background = this.add.tileSprite(0, 0, size.width, size.height, ASSET_KEYS.NORMAL_BACKGROUND)
     .setOrigin(0, 0)
     console.log(this.background)
-    this.background2 = this.add.tileSprite(0, 0, config.width, config.height, "background2")
+    this.background2 = this.add.tileSprite(0, 0, size.width, size.height, "background2")
     .setOrigin(0, 0)
    
     //"Spriteformer" title

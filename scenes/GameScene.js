@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { ASSET_KEYS, config } from "../main";
+import { ASSET_KEYS, size } from "../main";
 import { getWeatherCode } from "../weatherapi";
 
 const playerSpeed = 200
@@ -50,20 +50,20 @@ export class GameScene extends Phaser.Scene {
     this.fruitGroup = this.add.group()
 
     if (this.weatherCode >= 50 || this.weatherCode < 100) {
-      this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.GLUMMY_BACKGROUND)
+      this.background = this.add.tileSprite(0, 0, size.width, size.height, ASSET_KEYS.GLUMMY_BACKGROUND)
       .setOrigin(0, 0)
       this.platformIndex = 0
     } else {
-      this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.NORMAL_BACKGROUND)
+      this.background = this.add.tileSprite(0, 0, size.width, size.height, ASSET_KEYS.NORMAL_BACKGROUND)
       .setOrigin(0, 0)
       this.platformIndex = 0
     }
 
     if (this.weatherCode >= 50 || this.weatherCode < 100) {
-      this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.GLUMMY_BACKGROUND)
+      this.background = this.add.tileSprite(0, 0, size.width, size.height, ASSET_KEYS.GLUMMY_BACKGROUND)
       .setOrigin(0, 0)
     } else {
-      this.background = this.add.tileSprite(0, 0, config.width, config.height, ASSET_KEYS.NORMAL_BACKGROUND)
+      this.background = this.add.tileSprite(0, 0, size.width, size.height, ASSET_KEYS.NORMAL_BACKGROUND)
       .setOrigin(0, 0)
     }
 
@@ -128,7 +128,7 @@ export class GameScene extends Phaser.Scene {
       repeat: -1
     });
   
-    this.player = this.physics.add.sprite(24, config.height - 120, ASSET_KEYS.PLAYER.IDLE)
+    this.player = this.physics.add.sprite(24, size.height - 120, ASSET_KEYS.PLAYER.IDLE)
     // this.player.setCollideWorldBounds(true)
     this.player.addCollidesWith(1)
     this.player.anims.play("idle")
@@ -149,25 +149,25 @@ export class GameScene extends Phaser.Scene {
       repeat: -1
     });
 
-    let first = this.physics.add.sprite(24, config.height - 60, ASSET_KEYS.PLATFORMS, this.platformIndex).setImmovable(true)
+    let first = this.physics.add.sprite(24, size.height - 60, ASSET_KEYS.PLATFORMS, this.platformIndex).setImmovable(true)
     first.body.setAllowGravity(false);
     this.platformGroup.add(first, true)
 
-    this.flag = this.add.sprite(config.width - 24, config.height - 116, ASSET_KEYS.FLAG)
+    this.flag = this.add.sprite(size.width - 24, size.height - 116, ASSET_KEYS.FLAG)
     this.flag.anims.play("wave")
 
     const numPlatforms = 6;
-    const intervalX = (config.width - 100) / numPlatforms + 1
+    const intervalX = (size.width - 100) / numPlatforms + 1
 
     for (let i = 1; i <= numPlatforms; i++) {
-      let randomY = this.getRandomInt(config.height - 100, config.height)
+      let randomY = this.getRandomInt(size.height - 100, size.height)
       let randomX = intervalX * i;
       let platform = this.physics.add.sprite(randomX, randomY, ASSET_KEYS.PLATFORMS, this.platformIndex).setImmovable(true)
       platform.body.setAllowGravity(false);
       this.platformGroup.add(platform, true)
     }
 
-    let last = this.physics.add.sprite(config.width - 24, config.height - 60, ASSET_KEYS.PLATFORMS, this.platformIndex).setImmovable(true)
+    let last = this.physics.add.sprite(size.width - 24, size.height - 60, ASSET_KEYS.PLATFORMS, this.platformIndex).setImmovable(true)
     last.body.setAllowGravity(false);
     this.platformGroup.add(last, true)
 

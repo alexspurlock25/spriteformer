@@ -8,8 +8,6 @@ export const size = {
   height: 700,
 };
 
-export const gravity = 400
-
 export const ASSET_KEYS = {
   NORMAL_BACKGROUND: "background",
   GLUMMY_BACKGROUND: "glummy_background",
@@ -25,7 +23,7 @@ export const ASSET_KEYS = {
   }
 }
 
-export const config = {
+const config = {
   type: Phaser.WEBGL,
   width: size.width,
   height: size.height,
@@ -33,7 +31,7 @@ export const config = {
   physics: {
     default: "arcade",
     arcade: {
-      gravity: { y: gravity },
+      gravity: { y: 400 },
       debug: false
     },
   },
