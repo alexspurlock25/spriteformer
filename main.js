@@ -11,7 +11,9 @@ export const size = {
 export const ASSET_KEYS = {
   NORMAL_BACKGROUND: "background",
   GLUMMY_BACKGROUND: "glummy_background",
+  MENU_BACKGROUND: "menu_background",
   PLATFORMS: "platforms",
+  FONT: "game_font",
   STRAWBERRY: "strawberry",
   FLAG: "flag",
   PLAYER: {
@@ -20,6 +22,11 @@ export const ASSET_KEYS = {
     IDLE: "player_idle",
     JUMP: "player_jump",
     RUN: "player_run"
+  },
+  SOUND: {
+    MENU: "menu_background_sound",
+    GAME: "game_background_sound",
+    BUTTON_PRESS: "button_press_sound"
   }
 }
 

@@ -8,35 +8,34 @@ export class MenuScene extends Phaser.Scene {
   
   preload() {
     this.load.image(ASSET_KEYS.NORMAL_BACKGROUND, "./assets/background.png")
-    this.load.image("background2", "./assets/background2.png")
-    this.load.bitmapFont("titleFont", "./assets/bitmaps/Unnamed.png", "./assets/bitmaps/Unnamed.xml")
+    this.load.image(ASSET_KEYS.MENU_BACKGROUND, "./assets/background2.png")
+    this.load.bitmapFont(ASSET_KEYS.FONT, "./assets/bitmaps/Unnamed.png", "./assets/bitmaps/Unnamed.xml")
 
     //music & audio
-    this.load.audio("button1", "./assets/Audio/button_press.mp3");
-    this.load.audio("background_music2", "./assets/Audio/backgroundgame2.mp3");
+    this.load.audio(ASSET_KEYS.SOUND.BUTTON_PRESS, "./assets/Audio/button_press.mp3");
+    this.load.audio(ASSET_KEYS.SOUND.MENU, "./assets/Audio/backgroundgame2.mp3");
   }
 
   create() {
     //Deal Background for Main Menu
     this.background = this.add.tileSprite(0, 0, size.width, size.height, ASSET_KEYS.NORMAL_BACKGROUND)
     .setOrigin(0, 0)
-    console.log(this.background)
-    this.background2 = this.add.tileSprite(0, 0, size.width, size.height, "background2")
+    this.background2 = this.add.tileSprite(0, 0, size.width, size.height, ASSET_KEYS.MENU_BACKGROUND)
     .setOrigin(0, 0)
    
     //"Spriteformer" title
-    this.text1 = this.add.bitmapText(130, 100, "titleFont", "Spriteformer", 100);
+    this.titleText = this.add.bitmapText(130, 100, ASSET_KEYS.FONT, "Spriteformer", 100);
     this.onStart();
 
     //Button to Change Scene to First Level
-    const startButton = this.add.bitmapText(420, 400, "titleFont", "Play", 60);
+    const startButton = this.add.bitmapText(420, 400, ASSET_KEYS.FONT, "Play", 60);
     startButton.setInteractive();
-    startButton.on('pointerdown', function (pointer) {this.scene.start('GameScene'); this.buttonSound.play(); this.music.stop(musicConfig);}, this);
+    startButton.on("pointerdown", function (pointer) {this.scene.start("GameScene"); this.buttonSound.play(); this.music.stop(musicConfig);}, this);
 
     //music & audio
-    this.buttonSound = this.sound.add("button1", {volume: 0.5});
+    this.buttonSound = this.sound.add(ASSET_KEYS.SOUND.BUTTON_PRESS, {volume: 0.5});
 
-    this.music = this.sound.add("background_music2");
+    this.music = this.sound.add(ASSET_KEYS.SOUND.MENU);
 
     var musicConfig = {
       mute: false,
@@ -61,7 +60,7 @@ export class MenuScene extends Phaser.Scene {
   onStart() {
     //Makes "Spriteformer" Flash
     var tween = this.tweens.add({
-      targets: this.text1,
+      targets: this.titleText,
       alpha: 0.5,
       ease: 'Power1',
       duration: 2000,
